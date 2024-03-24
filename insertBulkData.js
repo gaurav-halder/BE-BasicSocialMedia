@@ -1,28 +1,28 @@
-const postsData = [
-    {
-      platform: "twitter",
-      text: "Hello Twitter!",
-      author: "User1",
-      likeCount: 100,
-      commentCount: 50,
-      shareCount: 25,
-      mediaUrl: "http://example.com/image1.jpg",
-      timestamp: new Date(),
-      additionalData: {}
-    },
-    {
-      platform: "facebook",
-      text: "Hello Facebook!",
-      author: "User2",
-      likeCount: 200,
-      commentCount: 100,
-      shareCount: 50,
-      mediaUrl: "http://example.com/image2.jpg",
-      timestamp: new Date(),
-      additionalData: {}
-    },
-    // Add more documents as needed
-  ];
+// const postsData = [
+//     {
+//       platform: "twitter",
+//       text: "Hello Twitter!",
+//       author: "User1",
+//       likeCount: 100,
+//       commentCount: 50,
+//       shareCount: 25,
+//       mediaUrl: "http://example.com/image1.jpg",
+//       timestamp: new Date(),
+//       additionalData: {}
+//     },
+//     {
+//       platform: "facebook",
+//       text: "Hello Facebook!",
+//       author: "User2",
+//       likeCount: 200,
+//       commentCount: 100,
+//       shareCount: 50,
+//       mediaUrl: "http://example.com/image2.jpg",
+//       timestamp: new Date(),
+//       additionalData: {}
+//     },
+//     // Add more documents as needed
+//   ];
 
   const sentenceStructures = [
     "Here's an interesting fact about {topic}: {fact}.",
@@ -67,7 +67,8 @@ const postsData = [
   function generateRandomData() {
     const platforms = ['twitter', 'facebook', 'instagram'];
     const topicKeys = Object.keys(topics);
-    const baseURLs = ['http://example.com/image1.jpg', 'http://example.com/image2.jpg', 'http://example.com/image3.jpg'];
+    const baseURLs = ['http://surl.li/rwtiw', 'http://surl.li/rwtkj', 'http://surl.li/rwtkr','http://surl.li/rwtjv'];
+
     const authors = ["Deep", "Alex", "Gaurav", "Raj", "Sima", "Gautam", "Ankita"];
     const randomPosts = [];
   

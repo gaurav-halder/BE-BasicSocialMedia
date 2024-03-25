@@ -186,7 +186,7 @@ app.post('/api/posts', async (req, res) => {
     console.log(req.body); 
     try {
       const post = new SocialMediaPost(req.body);
-      await post.save();
+     // await post.save();
       SocialMediaPost.create(req.body);
       res.status(201).json(post);
     } catch (error) {
@@ -247,7 +247,6 @@ app.post('/api/posts', async (req, res) => {
         
         
         posts = await postsQuery.exec();
-        console.log("here");
          if (res.json(posts) || res.json(posts.length) === 0) {
              await insertBulkData.insertRandomPostsbyText(query, 10);
             // res.status(400).send('Creating new records, please try again.');

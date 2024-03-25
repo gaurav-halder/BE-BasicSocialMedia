@@ -2,8 +2,9 @@ const express = require('express');
 const Twitter = require('twitter-lite');
 const cors = require('cors');
 
+// import the insertRandomPostsbyText function from the insertBulkData.js file
 
-
+const insertBulkData = require('./insertBulkData');
 require('dotenv').config();
 
 const mongoose = require('mongoose');
@@ -245,8 +246,18 @@ app.post('/api/posts', async (req, res) => {
         }
         
         
-        const posts = await postsQuery.exec();
-        res.json(posts);
+        posts = await postsQuery.exec();
+        console.log("here");
+         if (res.json(posts) || res.json(posts.length) === 0) {
+             await insertBulkData.insertRandomPostsbyText(query, 10);
+            // res.status(400).send('Creating new records, please try again.');
+         } 
+         else {
+
+             res.status(200).json(posts);
+         }
+        
+        
     } catch (error) {
         console.error('Failed to fetch posts:', error);
         res.status(500).send('Failed to fetch posts');

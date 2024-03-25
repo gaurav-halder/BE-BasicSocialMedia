@@ -64,17 +64,22 @@ const postsData = [
     return structure.replace('{topic}', topic).replace('{fact}', fact);
   }
   
-  function generateRandomData() {
+  function generateRandomData(messagee=null, n=100) {
     const platforms = ['twitter', 'facebook', 'instagram'];
     const topicKeys = Object.keys(topics);
-    const baseURLs = ['http://example.com/image1.jpg', 'http://example.com/image2.jpg', 'http://example.com/image3.jpg'];
+    const baseURLs = ['http://surl.li/rwtiw', 'http://surl.li/rwtkj', 'http://surl.li/rwtkr', 'http://surl.li/rwtjv'];
     const authors = ["Deep", "Alex", "Gaurav", "Raj", "Sima", "Gautam", "Ankita"];
     const randomPosts = [];
+    
   
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < n; i++) {
       const platform = getRandomElement(platforms);
       const topic = getRandomElement(topicKeys);
-      const text = generateText(topic); // Generate text based on the topic
+      let text = generateText(topic);
+      if (messagee!=null){
+       text+= " " + messagee;
+      }
+      // Generate text based on the topic
       const likeCount = Math.floor(Math.random() * 1000);
       const shareCount = Math.floor(Math.random() * 1000);
       const commentCount = Math.floor(Math.random() * 500);
@@ -126,15 +131,26 @@ const postsData = [
   // insertBulkData();
     
 
-  async function insertRandomPosts() {
-    const randomPosts = generateRandomData();
+  async function insertRandomPosts(n) {
+    const randomPosts = generateRandomData(n);
     try {
       await SocialMediaPost.insertMany(randomPosts);
-      console.log('Successfully inserted 1,000 random posts.');
+      console.log('Successfully inserted ' + n +  ' random posts.');
     } catch (error) {
       console.error('Error inserting posts:', error);
     }
   }
+  async function insertRandomPostsbyText(message,n) {
+    const randomPosts = generateRandomData(message,n);
+    try {
+      await SocialMediaPost.insertMany(randomPosts);
+      console.log('Successfully inserted ' + n +  ' random posts.');
+    } catch (error) {
+      console.error('Error inserting posts:', error);
+    }
+  }
+
+
   async function clearExistingData() {
     try {
       await SocialMediaPost.deleteMany({});
@@ -145,4 +161,9 @@ const postsData = [
   }
   // Call the function to insert the posts
  //clearExistingData();
- insertRandomPosts();
+ //insertRandomPosts(n=100);
+
+ //export {insertRandomPostsbyText};
+ module.exports = {
+  insertRandomPostsbyText: insertRandomPostsbyText
+};

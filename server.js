@@ -1,6 +1,7 @@
 const express = require('express');
-const Twitter = require('twitter-lite');
+//const Twitter = require('twitter-lite');
 const cors = require('cors');
+//
 
 // import the insertRandomPostsbyText function from the insertBulkData.js file
 
@@ -34,37 +35,15 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
   app.post('/api/posts', async (req, res) => {
     try {
-      const { platform, text, author, likeCount, commentCount } = req.body;
-      const newPost = new SocialMediaPost({ platform, text, author, likeCount, commentCount });
+      const { platform, text, author, likeCount, commentCount,shareCount, mediaUrl,timestamp } = req.body;
+      const newPost = new SocialMediaPost({ platform, text, author, likeCount, commentCount,shareCount, mediaUrl,timestamp });
       
       await newPost.save();
-      res.status(201).send('Post created successfully');
+      res.status(201).json(newPost);
+
     } catch (error) {
       console.error('Error creating post:', error);
       res.status(500).send('Error creating the post');
-    }
-  });
-
-    app.get('/api/posts', async (req, res) => {
-        try {
-            const posts = await SocialMediaPost.find();
-            res.json(posts);
-        } catch (error) {
-            console.error('Error fetching posts:', error);
-            res.status(500).send('Error fetching posts');
-        }
-    });
-
-app.post('/api/posts', async (req, res) => {
-    console.log(req.body); 
-    try {
-      const post = new SocialMediaPost(req.body);
-     // await post.save();
-      SocialMediaPost.create(req.body);
-      res.status(201).json(post);
-    } catch (error) {
-      console.error("Error creating post:", error);
-      res.status(500).json({ message: "Error creating post", error: error.message });
     }
   });
   app.get('/api/posts/search', async (req, res) => {

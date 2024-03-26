@@ -2,8 +2,9 @@ const express = require('express');
 const Twitter = require('twitter-lite');
 const cors = require('cors');
 
+// import the insertRandomPostsbyText function from the insertBulkData.js file
 
-
+const insertBulkData = require('./insertBulkData');
 require('dotenv').config();
 
 const mongoose = require('mongoose');
@@ -30,15 +31,35 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch(err => console.error('MongoDB connection error:', err));
 
 
-app.get("/", (req,res) =>{
-    console.log(req)
-    res.send("Hello welcome to my codee")
-})
+
+  app.post('/api/posts', async (req, res) => {
+    try {
+      const { platform, text, author, likeCount, commentCount } = req.body;
+      const newPost = new SocialMediaPost({ platform, text, author, likeCount, commentCount });
+      
+      await newPost.save();
+      res.status(201).send('Post created successfully');
+    } catch (error) {
+      console.error('Error creating post:', error);
+      res.status(500).send('Error creating the post');
+    }
+  });
+
+    app.get('/api/posts', async (req, res) => {
+        try {
+            const posts = await SocialMediaPost.find();
+            res.json(posts);
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+            res.status(500).send('Error fetching posts');
+        }
+    });
+
 app.post('/api/posts', async (req, res) => {
     console.log(req.body); 
     try {
       const post = new SocialMediaPost(req.body);
-      await post.save();
+     // await post.save();
       SocialMediaPost.create(req.body);
       res.status(201).json(post);
     } catch (error) {
@@ -46,7 +67,6 @@ app.post('/api/posts', async (req, res) => {
       res.status(500).json({ message: "Error creating post", error: error.message });
     }
   });
-  
   app.get('/api/posts/search', async (req, res) => {
     const { query, platform, sortBy } = req.query; // Destructure to get the platform parameter
 
@@ -82,8 +102,17 @@ app.post('/api/posts', async (req, res) => {
         }
         
         
-        const posts = await postsQuery.exec();
-        res.json(posts);
+        posts = await postsQuery.exec();
+         if (res.json(posts) || res.json(posts.length) === 0) {
+             await insertBulkData.insertRandomPostsbyText(query, 10);
+            // res.status(400).send('Creating new records, please try again.');
+         } 
+         else {
+
+             res.status(200).json(posts);
+         }
+        
+        
     } catch (error) {
         console.error('Failed to fetch posts:', error);
         res.status(500).send('Failed to fetch posts');
